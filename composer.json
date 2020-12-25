@@ -1,0 +1,24 @@
+{
+    "name": "gpi/framework",
+    "description": "api",
+    "license": "LING",
+    "authors": [
+        {
+            "name": "凌凌2兔",
+            "email": "xiao990987@163.com"
+        }
+    ],
+    "require": {
+        "symfony/mime": "^5.2.1"
+
+    },
+    "autoload": {
+        "files": [
+            "src/function/helper.php"
+        ],
+        "psr-4": {
+            "gapi\\": "src/"
+
+        }
+    }
+}
