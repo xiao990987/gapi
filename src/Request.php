@@ -16,7 +16,6 @@ class Request{
 
     public static function get(?string $key='',?string $default='',?string $filter=''):string|array
     {
-        unset($_GET['s']);
         if($key==''){
             return $_GET;
         }

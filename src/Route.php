@@ -7,6 +7,7 @@ class Route
 {
     public static array $routes = [];
     public static string $version = '';
+    public static string $flag = 's';
     /**
      * 存储路由
      * 如果当前请求类型不存在会自动向ALL中查找
@@ -82,12 +83,22 @@ class Route
 
     public static function uri():string
     {
-        return $_SERVER['REQUEST_URI'];
+        $uri = $_SERVER['QUERY_STRING'];
+        if($uri=='') return '';
+        $uri_params = explode('&',$uri);
+        $params = [];
+        if($uri_params){
+            foreach($uri_params as $v){
+                $tmp = explode('=',$v);
+                $params[$tmp[0]] = $tmp[1];
+            }
+        }
+        return isset($params[self::$flag]) ? '/'.$params[self::$flag] : '';
     }
 
 
 
-    public static function get(array $paths,string $action,array $pattern=[]):void
+    public static function get(array $paths,string|callable $action,array $pattern=[]):void
     {
         $route = '';
         $params = [];
@@ -111,7 +122,12 @@ class Route
             }
         }
 
-        self::runRoute($route,$params);
+        if(is_callable($route)){
+            $route($params);
+        }else{
+            self::runRoute($route,$params);
+        }
+
 
 
     }

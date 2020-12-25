@@ -10,7 +10,6 @@ class Autoload
 
     public static function init():void
     {
-
         # app
         spl_autoload_register(['\\gapi\\Autoload', 'app']);
     }

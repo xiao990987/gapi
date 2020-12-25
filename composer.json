@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+
         "symfony/mime": "^5.2.1"
 
     },
