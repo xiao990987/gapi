@@ -15,6 +15,7 @@ class Logger
     static $wss = 1; # 开启websocket 调试  默认地址：wss://127.0.0.1:8866/wss
     static $open = 1; # 是否开启日志
 
+    static $logfile = false;
     static $debug = false;
     static $logIndex = 0;
 
@@ -23,6 +24,7 @@ class Logger
     {
         if(++self::$logIndex){
             self::$debug = Config::file('config.php')['debug'];
+            self::$logfile = Config::file('config.php')['logfile'];
         }
         if(!self::$debug){
             return ;
@@ -47,13 +49,16 @@ class Logger
         }
 
 
-        if (!file_exists(self::$path)) {
-            @mkdir(self::$path, 0777, 1);
+        if(self::$logfile){
+            if (!file_exists(self::$path)) {
+                @mkdir(self::$path, 0777, 1);
+            }
+            $file = self::$path . DS . date(self::$format) . self::$suffix;
+            $fp = fopen($file, "a+");
+            fwrite($fp, $info);
+            fclose($fp);
         }
-        $file = self::$path . DS . date(self::$format) . self::$suffix;
-        $fp = fopen($file, "a+");
-        fwrite($fp, $info);
-        fclose($fp);
+
     }
 
     public static function error(string $msg):void{

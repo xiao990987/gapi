@@ -126,8 +126,6 @@ class Route
             self::runRoute($route,$params);
         }
 
-
-
     }
 
     public static function matchPattern(string $path,array $pattern,string $uri):array

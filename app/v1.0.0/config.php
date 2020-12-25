@@ -3,6 +3,7 @@
 return [
 
     'debug' => true,
+    'logfile' => false,
 
 
 
