@@ -97,27 +97,25 @@ class Route
     }
 
 
-
     public static function get(array $paths,string|callable $action,array $pattern=[]):void
     {
         $route = '';
         $params = [];
         $uri = self::uri();
-        if(is_array($paths)){
-            if($pattern){
-                foreach ($paths as $path){
-                    $params = self::matchPattern($path,$pattern,$uri);
-                    if($params){
-                        $route = $action;
-                        break;
-                    }
+
+        if($pattern){
+            foreach ($paths as $path){
+                $params = self::matchPattern($path,$pattern,$uri);
+                if($params){
+                    $route = $action;
+                    break;
                 }
-            }else{
-                foreach ($paths as $v){
-                    if($uri == $v){
-                        $route = $action;
-                        break;
-                    }
+            }
+        }else{
+            foreach ($paths as $v){
+                if($uri == $v){
+                    $route = $action;
+                    break;
                 }
             }
         }
