@@ -84,7 +84,7 @@ class Route
     public static function uri():string
     {
         $uri = $_SERVER['QUERY_STRING'];
-        if($uri=='') return '';
+        if($uri=='') return '/';
         $uri_params = explode('&',$uri);
         $params = [];
         if($uri_params){
