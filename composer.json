@@ -1,5 +1,5 @@
 {
-    "name": "gpi/framework",
+    "name": "gapi/framework",
     "description": "api",
     "license": "LING",
     "authors": [
@@ -12,9 +12,7 @@
         "serve": "@php -S 0.0.0.0:8888 -t / index.php"
     },
     "require": {
-
         "symfony/mime": "^5.2.1"
-
     },
     "autoload": {
         "files": [
@@ -22,7 +20,6 @@
         ],
         "psr-4": {
             "gapi\\": "src/"
-
         }
     }
 }

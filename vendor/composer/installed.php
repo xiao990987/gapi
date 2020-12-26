@@ -6,19 +6,19 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'bd14f25d843e1def063dc8411c9da9450cbed355',
-    'name' => 'gpi/framework',
+    'reference' => '56d26e1eb864ba58d5d2da9929f5627edd202c45',
+    'name' => 'gapi/framework',
   ),
   'versions' => 
   array (
-    'gpi/framework' => 
+    'gapi/framework' => 
     array (
       'pretty_version' => 'dev-master',
       'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => 'bd14f25d843e1def063dc8411c9da9450cbed355',
+      'reference' => '56d26e1eb864ba58d5d2da9929f5627edd202c45',
     ),
     'symfony/deprecation-contracts' => 
     array (

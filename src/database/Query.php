@@ -7,24 +7,26 @@ class Query
 
 
     public string $sql = '';
+    public string $table = '';
+    public string $handler = '';
     /**
      * @var string[] $section
      */
     public array $section = [
-        'select' => '*',
+        'select' => '',
         'insert' => '',
         'set' => '',
         'where' => '',
+        'orWhere' => '',
         'union' => '',
         'join' => '',
         'group' => '',
-        'orderBy' => '',
+        'order' => '',
         'limit' => '',
         'max' => '',
         'min' => '',
         'sum' => '',
         'count' => '',
-        'set' => ''
     ];
 
 
@@ -50,67 +52,69 @@ class Query
 
     public function group(string $group): self
     {
-        $this->section['group'] = "group by {$group}";
+        $this->section['group'] = " group by {$group}";
         return $this;
     }
 
     public function isNull($field)
     {
-        $this->section['where'][] = "{$field} is null";
+        $this->section['where'][] = " {$field} is null";
         return $this;
     }
 
     public function isNotNull(string $field): self
     {
-        $this->section['where'][] = "{$field} is not null";
+        $this->section['where'][] = " {$field} is not null";
         return $this;
     }
 
     //联合
-    public function union($field)
+    public function union(): self
     {
-        $this->section['union'] = 'union all';
+        $this->section['union'] = ' union all';
         return $this;
     }
 
     public function innerJoin(string $table, string $on1, string $on2): self
     {
-        $this->section['join'] = 'inner join {$table} where $on1=$on2';
+        $this->section['join'] = " inner join {$table} where {$on1}={$on2}";
         return $this;
     }
 
     public function fullJoin(string $table, string $on1, string $on2): self
     {
-        $this->section['join'] = 'full join {$table} where $on1=$on2';
+        $this->section['join'] = " full join {$table} where {$on1}={$on2}";
         return $this;
     }
 
     public function rightJoin(string $table, string $on1, string $on2): self
     {
-        $this->section['join'] = 'right join {$table} where $on1=$on2';
+        $this->section['join'] = " right join {$table} where {$on1}={$on2}";
         return $this;
     }
 
     public function leftJoin(string $table, string $on1, string $on2): self
     {
-        $this->section['join'] = 'left join {$table} where $on1=$on2';
+        $this->section['join'] = " left join {$table} where {$on1}={$on2}";
         return $this;
     }
 
     public function join(string $table, string $on1, string $on2): self
     {
-        $this->section['join'] = 'join {$table} where $on1=$on2';
+        $this->section['join'] = " join {$table} where {$on1}={$on2}";
         return $this;
     }
 
     public function insert($insert)
     {
-
+        $this->handler = "select";
+        return $this;
     }
 
     //解析出完整的SQL命令
     public function compile()
     {
+
 
     }
 
@@ -146,7 +150,7 @@ class Query
 
     public function from($table, string $prefix = ''): self
     {
-        $this->table = $table;
+        $this->table = $prefix . $table;
         return $this;
     }
 
@@ -158,26 +162,26 @@ class Query
 
     public function orWhere($where)
     {
-        $this->section['where'][] = " or {$where}";
+        $this->section['orWhere'][] = $where;
         return $this;
     }
 
     public function limit(string $limit): self
     {
-        $this->section['limit'][] = "limit {$limit}";
+        $this->section['limit'] = " limit {$limit}";
         return $this;
     }
 
     public function order(string $order): self
     {
-        $this->section['order'][] = "order by {$order}";
+        $this->section['order'] = " order by {$order}";
         return $this;
     }
 
 
     public function like(string $field, string $value): self
     {
-        $this->section['like'][] = "like {$value}";
+        $this->section['like'][] = " like {$value}";
         return $this;
     }
 
@@ -189,19 +193,35 @@ class Query
 
     public function notBetween(string $between): self
     {
-        $this->section['between'][] = "not between {$between}";
+        $this->section['between'][] = " not between {$between}";
         return $this;
     }
 
     public function between(string $between): self
     {
-        $this->section['between'][] = "between {$between}";
+        $this->section['between'][] = " between {$between}";
         return $this;
     }
 
     public function select(string $field = '*'): self
     {
-        $this->section['select'] = "select";
+
+        $where = '';
+        $flag = 0;
+        if ($this->section['where']) {
+            $flag = 1;
+            $where = implode(' and ', $this->section['where']);
+        }
+        if ($this->section['orWhere']) {
+            $flag = 1;
+            $where = implode(' or ', $this->section['orWhere']);
+        }
+        if ($flag) {
+            $where = "where {$where}";
+        }
+
+        $this->sql = "select {$field} from {$this->table}{$this->section['union']}{$this->section['join']}{$where}{$this->section['group']}{$this->section['order']}{$this->section['limit']}";
+
         return $this;
     }
 
@@ -222,36 +242,40 @@ class Query
 
     public function count(string $field = '*', string $as = 'total'): self
     {
-        $this->section['count'] = "count($field) as total";
+        $this->section['count'] = " count($field) as total";
         return $this;
     }
 
 
-    public function min(string $field):self
+    public function min(string $field): self
     {
-        $this->section['min'] = "min($field) as total";
+        $this->section['min'] = " min($field) as total";
         return $this;
     }
 
-    public function max(string $field):self
+    public function max(string $field): self
     {
-        $this->section['max'] = "max($field) as total";
+        $this->section['max'] = " max($field) as total";
         return $this;
     }
 
-    public function avg(string $field,string $as='total'):self
+    public function avg(string $field, string $as = 'total'): self
     {
-        $this->section['avg'] = "avg($field) as {$as}";
+        $this->section['avg'] = " avg($field) as {$as}";
         return $this;
     }
 
-    public function version():string
+    public function version(): string
     {
         return 'SELECT VERSION()';
     }
 
-    public function __toString(){
-        echo 'aaa';
+    public function __toString()
+    {
+
+        $this->compile();
+
+        return $this->sql;
     }
 
 }

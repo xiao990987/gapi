@@ -14,7 +14,8 @@ class Index
     #[\gapi\Route(path: ["/index","/"], methods: "get")]
     public function index()
     {
-        echo 222;
+        echo __FILE__;
+        echo APP_VERSION;
     }
 
     #[\gapi\Route(path: ["/next"], methods: "get")]

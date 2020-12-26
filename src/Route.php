@@ -6,9 +6,9 @@ use gapi\lib\Logger;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_FUNCTION | \Attribute::IS_REPEATABLE)]
 class Route
 {
-    public static array $routes = [];
     public static string $version = '';
     public static string $flag = 's';
+
     /**
      * 存储路由
      * 如果当前请求类型不存在会自动向ALL中查找
@@ -120,7 +120,6 @@ class Route
 
     public static function get(array $paths, string|callable $action, array $pattern = []): void
     {
-
         $route = '';
         $params = [];
         $uri = self::uri();
@@ -144,7 +143,9 @@ class Route
             $route($params);
         } else {
             self::runRoute($route, $params);
+
         }
+
     }
 
     public static function post(array $paths, string|callable $action, array $pattern = []): void
@@ -160,7 +161,6 @@ class Route
 
     public static function matchPattern(string $path, array $pattern, string $uri): array
     {
-
         $path = str_replace('/', '\/', $path);
         foreach ($pattern as $name => $value) {
             $path = str_replace('{' . $name . '}', '(' . $value . ')', $path);
@@ -185,6 +185,7 @@ class Route
         $controller = $mvc[1];
         $module = $mvc[0];
         $class = "\\app\\{$module}\\controller\\" . ucfirst($controller);
+
         if (class_exists($class)) {
             $controller = new $class();
             define('ACTION_NAME', $mvc[2]);
@@ -192,7 +193,14 @@ class Route
             define('MODULE_NAME', $mvc[0]);
             $controller->$action($params);
             Logger::info("当前执行方法: {$class}@{$action}");
+            Logger::info("消耗内存 " . Debug::getUseMem());
+            Logger::info("耗时 " . Debug::getUseTime() . ' 秒');
+            Logger::info("吞吐率 " . Debug::getThroughputRate());
+            Logger::info("共运行 " . Debug::getFile() . " 个文件");
+            Logger::info("\n" . implode("\n", Debug::getFile(true)));
+            exit;
         }
+
     }
 
 

@@ -15,13 +15,13 @@ class Index3
     public function index()
     {
 
-
-        $query = Db::connect(Config::file('database.php'))->query("SHOW COLUMNS from lg_member;");
+        $db = Db::connect(Config::file('database.php'));
 
         $queryObj = new Query();
-        //echo $queryObj->version();
-        $queryObj->table('lg_member');
-        print_r($query);
+        $queryObj->from('managers','lg_')->field('*')->limit(10)->order('uid desc')->select();
+        $lists = $db->query($queryObj);
+
+        print_r($lists);
 
     }
 

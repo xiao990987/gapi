@@ -89,9 +89,9 @@ abstract class Database
      * 数据库驱动必须创建下列方法
      * 并且必须返回正确的值
      * @param $sql
-     * @return array|Data
+     * @return array|Query
      */
-    abstract public function query($sql): array|Data;         //返回值是查询出的数组
+    abstract public function query($sql): array|Query;         //返回值是查询出的数组
 
     abstract public function getError(): string;            //返回上一个错误信息
 

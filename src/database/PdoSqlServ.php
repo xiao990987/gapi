@@ -49,9 +49,9 @@ class PdoSqlServ extends DBase
      *
      * @param $sql
      *
-     * @return array|Data
+     * @return array|Query
      */
-    public function query($sql): array|Data
+    public function query($sql): array|Query
     {
         $query = $this->db->query($sql);
 

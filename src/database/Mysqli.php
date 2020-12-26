@@ -57,11 +57,12 @@ class Mysqli extends Database
 
     /**
      * @param $sql
-     * @return array | Data
+     * @return array | Query
      */
-    public function query($sql): Data|array
+    public function query($sql): Query|array
     {
         $query = $this->mysqli->query($sql);
+        echo $sql;
         $result = [];
         if ($query) {
             while ($row = $query->fetch_assoc()) {

@@ -26,14 +26,15 @@ class Db extends Database
      * 数据库驱动必须创建下列方法
      * 并且必须返回正确的值
      * @param $sql
-     * @return array|Data
+     * @return array|Query
      */
-    public function query($sql): array|Data
+    public function query($sql): array|Query
     {
         try{
+            Logger::info("run sql:{$sql}");
             return self::$db->query($sql);
         }catch (\Exception){
-            Logger::error($this->getError());
+            Logger::error(self::$db->getError());
         }
     }
 

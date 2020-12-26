@@ -25,8 +25,6 @@ class Application
         public array $config = [],
     )
     {
-
-
         $this->version = Request::get('v', '');
         $this->version = $this->version == '' ? Loader::system('config.php')['app_version'] : 'v' . $this->version;
         if (!defined('APP_VERSION')) {
@@ -64,11 +62,6 @@ class Application
     {
         Loader::autoload();
         $this->route->send($params);
-        Logger::info("消耗内存 " . Debug::getUseMem());
-        Logger::info("耗时 " . Debug::getUseTime() . ' 秒');
-        Logger::info("吞吐率 " . Debug::getThroughputRate());
-        Logger::info("共运行 " . Debug::getFile() . " 个文件");
-        Logger::info("\n" . implode("\n", Debug::getFile(true)));
     }
 
     public static function runtimeCache(): void
@@ -76,8 +69,6 @@ class Application
         if (!defined('RUNTIME_PATH')) {
             define('RUNTIME_PATH', VERSION_PATH . DS . 'runtime');
         }
-
-
         if (!file_exists(RUNTIME_PATH)) {
             mkdir(RUNTIME_PATH, 0777, true);
         }
