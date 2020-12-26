@@ -14,13 +14,13 @@ class Index
     #[\gapi\Route(path: ["/index","/"], methods: "get")]
     public function index()
     {
-
-        $query = Db::connect(Config::file('database.php'))->query("SHOW COLUMNS from lg_member;");
-
-        $queryObj = new Query();
-        echo $queryObj->version();
-        $queryObj->table('lg_member');
-        print_r($query);
+        echo 'hello world!';
+//        $query = Db::connect(Config::file('database.php'))->query("SHOW COLUMNS from lg_member;");
+//
+//        $queryObj = new Query();
+//        echo $queryObj->version();
+//        $queryObj->table('lg_member');
+//        print_r($query);
 
     }
 
