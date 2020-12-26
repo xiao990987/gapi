@@ -4,16 +4,8 @@ namespace gapi;
 
 use gapi\lib\Logger;
 
-class Autoload
+class Loader
 {
-
-
-    public static function init(): void
-    {
-        # app
-        spl_autoload_register(['\\gapi\\Autoload', 'app']);
-    }
-
     # app mvc
     private static function app(string $class): void
     {
@@ -27,8 +19,8 @@ class Autoload
             return;
         }
         //回溯上一个版本
-        foreach (self::version() as $version){
-            $class_file = APP_PATH.DS.$version.DS.$file;
+        foreach (self::version() as $version) {
+            $class_file = APP_PATH . DS . $version . DS . $file;
             if (file_exists($class_file)) {
                 require $class_file;
                 Logger::info('APP 加载文件:' . $class_file);
@@ -45,7 +37,7 @@ class Autoload
         sort($version_list);
         $versions = [];
         foreach ($version_list as $version) {
-            if($version==$current){
+            if ($version == $current) {
                 break;
             }
             $versions[] = $version;
@@ -53,7 +45,7 @@ class Autoload
         return array_reverse($versions);
     }
 
-    public static function file($file):mixed
+    public static function file($file): mixed
     {
         $version_file = VERSION_PATH . DS . $file;
         //当前版本
@@ -61,13 +53,38 @@ class Autoload
             return include $version_file;
         }
         //回溯上一个版本
-        foreach (Autoload::version() as $version){
-            $version_file = APP_PATH.DS.$version.DS.$file;
+        foreach (Autoload::version() as $version) {
+            $version_file = APP_PATH . DS . $version . DS . $file;
             if (file_exists($version_file)) {
                 return include $version_file;
             }
         }
         return [];
     }
+
+
+    public static function controllers(string $version = ''): array
+    {
+        $current_version = $version == '' ? APP_VERSION : $version;
+        $versions = array_merge([$current_version], self::version(APP_VERSION));
+        $versions = array_reverse($versions);
+        $modules = Autoload::file('module.php');
+        $controllers = [];
+        foreach ($modules as $module) {
+            foreach ($versions as $version) {
+                //获取控制器目录
+                $module_path = APP_PATH . DS . $version . DS . $module . DS . 'controller';
+                //获取控制器列表
+                $files = dir_list($module_path);
+                foreach ($files as $file) {
+                    $controllers[$module . '\\' . substr(basename($file),0,-4)] = $file;
+                }
+            }
+        }
+        //sort($controllers);
+        print_r($controllers);
+        return $controllers;
+    }
+
 
 }

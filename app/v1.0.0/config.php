@@ -2,9 +2,9 @@
 
 return [
 
-    'debug' => false,
+    'debug' => true,
     'logfile' => false,
-    'wss' => false,
+    'wss' => true,
     'trace' => false,
 
 

@@ -1,21 +1,21 @@
 <?php
 
-namespace app\home\controller;
+namespace app\v102\home\controller;
 use gapi\Autoload;
 use gapi\Config;
 use gapi\database\Db;
 use gapi\database\Query;
 use gapi\Request;
-use gapi\Route;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Index
+class Index3
 {
-    #[\gapi\Route(path: "/index", methods: "get")]
+    #[\gapi\Route(path: "/index3", methods: "get")]
     public function index()
     {
 
 
+        Autoload::controllers();
 
 
 

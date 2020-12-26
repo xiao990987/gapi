@@ -1,11 +1,12 @@
 <?php
 
-namespace app\home\controller;
+namespace app\v101\home\controller;
 use gapi\Autoload;
 use gapi\Config;
 use gapi\database\Db;
 use gapi\database\Query;
 use gapi\Request;
+use gapi\Route;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Index
@@ -14,8 +15,8 @@ class Index
     public function index()
     {
 
-       echo __FILE__;
-
+        echo 223;
+        Route::update();
     }
 
     #[\gapi\Route(path: "/next", methods: "get")]
