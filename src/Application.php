@@ -26,11 +26,16 @@ class Application
     )
     {
 
+
         $this->version = Request::get('v', '');
-        $this->version = $this->version == '' ? Loader::system('config.php')['app_version'] : 'v'.$this->version;
-        define('APP_VERSION', $this->version);
+        $this->version = $this->version == '' ? Loader::system('config.php')['app_version'] : 'v' . $this->version;
+        if (!defined('APP_VERSION')) {
+            define('APP_VERSION', $this->version);
+        }
         $this->path = $this->path == '' ? $this->version : $this->path;
-        define('VERSION_PATH', APP_PATH . DS . $this->path);
+        if (!defined('VERSION_PATH')) {
+            define('VERSION_PATH', APP_PATH . DS . $this->path);
+        }
         if (!file_exists(VERSION_PATH)) {
             throw new \Exception(VERSION_PATH . ' 目录不存在.');
         }
@@ -68,7 +73,11 @@ class Application
 
     public static function runtimeCache(): void
     {
-        define('RUNTIME_PATH', VERSION_PATH . DS . 'runtime');
+        if (!defined('RUNTIME_PATH')) {
+            define('RUNTIME_PATH', VERSION_PATH . DS . 'runtime');
+        }
+
+
         if (!file_exists(RUNTIME_PATH)) {
             mkdir(RUNTIME_PATH, 0777, true);
         }

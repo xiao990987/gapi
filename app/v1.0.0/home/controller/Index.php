@@ -42,8 +42,8 @@ class Index
     public function hello(?array $route): void
     {
         echo 'hello';
-        print_r($route);
-        print_r(Request::get());
+//        print_r($route);
+//        print_r(Request::get());
     }
 
 

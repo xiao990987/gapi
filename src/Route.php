@@ -26,9 +26,9 @@ class Route
     public $handler;
 
     public function __construct(
-        public array $path = [],
+        public string|array $path = [],
         public string $methods = '',
-        public array $pattern = [],
+        public string|array $pattern = [],
     )
     {
     }
@@ -66,7 +66,7 @@ class Route
      */
     public static function __callStatic(string $method, array $params = []): static
     {
-        return new static($method, isset($params['path']) ?? $params['path'], isset($params['callback']) ?? $params['callback']);
+       return new static($method, isset($params['path']) ?? $params['path'], isset($params['callback']) ?? $params['callback']);
     }
 
     public static function uri(): string

@@ -23,7 +23,8 @@ class Query
         'max' => '',
         'min' => '',
         'sum' => '',
-        'count' => ''
+        'count' => '',
+        'set' => ''
     ];
 
 
@@ -128,13 +129,13 @@ class Query
     // - 减
     public function setDec(string $field, int $num = 1)
     {
-
+        $this->section['set'] = "$field={$field}+{$num}";
     }
 
     // + 加
     public function setInc(string $field, int $num = 1)
     {
-
+        $this->section['set'] = "$field={$field}-{$num}";
     }
 
     public function table(string $table, string $prefix = ''): self
@@ -249,5 +250,8 @@ class Query
         return 'SELECT VERSION()';
     }
 
+    public function __toString(){
+        echo 'aaa';
+    }
 
 }

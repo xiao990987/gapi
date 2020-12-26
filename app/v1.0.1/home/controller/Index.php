@@ -11,12 +11,10 @@ use gapi\Route;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Index
 {
-    #[\gapi\Route(path: ["/index"], methods: "get")]
+    #[\gapi\Route(path: ["/index","/"], methods: "get")]
     public function index()
     {
-
-        echo 223;
-        Route::update();
+        echo 222;
     }
 
     #[\gapi\Route(path: ["/next"], methods: "get")]

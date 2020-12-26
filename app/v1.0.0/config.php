@@ -2,7 +2,7 @@
 
 return [
 
-    'debug' => false,
+    'debug' => true,
     'logfile' => false,
     'wss' => true,
     'trace' => false,
