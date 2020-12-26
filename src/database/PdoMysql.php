@@ -21,18 +21,18 @@ class PdoMysql extends DBase
      * @param PdoMysqlDatabase $database
      * @return bool
      */
-    public function _connect(mixed $database): bool
+    public function _connect(array $database): void
     {
-        $this->db = new \pdo('mysql:dbname=' . $database->dbName . ';host=' . $database->host . ';port=' .
-            $database->port . ';', $database->user, $database->password, [
+
+        $this->db = new \pdo('mysql:dbname=' . $database['database'] . ';host=' . $database['hostname'] . ';port=' .
+            $database['hostport'] . ';', $database['username'], $database['password'], [
             \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
             \PDO::ATTR_STRINGIFY_FETCHES => false,
             \PDO::ATTR_EMULATE_PREPARES => false,
         ]);
-        $this->exec('set names ' . $database->charset);
-        return TRUE;
+        $this->exec('set names ' . $database['charset']);
     }
 
     /**
@@ -53,7 +53,7 @@ class PdoMysql extends DBase
      *
      * @return array|Data
      */
-    public function _query($sql): array|Data
+    public function query($sql): array|Data
     {
         $query = $this->db->query($sql);
 
@@ -61,7 +61,7 @@ class PdoMysql extends DBase
             $result = [];
             $data = $query->fetchAll(\PDO::FETCH_ASSOC);   //只获取键值
             foreach ($data as &$item) {
-                $result[] = new Data($item);
+                $result[] = $item;
             }
             return $result;
         }
@@ -76,7 +76,7 @@ class PdoMysql extends DBase
      *
      * @return string
      */
-    public function real_escape_string($string): string
+    public function quote($string): string
     {
         return $this->db->quote($string);
     }
@@ -86,7 +86,7 @@ class PdoMysql extends DBase
      *
      * @return false|int
      */
-    public function _exec($sql): false|int
+    public function exec($sql): false|int
     {
         return $this->db->exec($sql);
     }
@@ -94,7 +94,7 @@ class PdoMysql extends DBase
     /**
      * @return bool
      */
-    public function beginTransaction(): bool
+    public function startTrans(): bool
     {
         return $this->db->beginTransaction();
     }

@@ -4,8 +4,8 @@ namespace gapi;
 use gapi\lib\Logger;
 
 date_default_timezone_set('PRC');
-
-
+define('RUN_START_TIME', microtime(true));
+define('RUN_START_MEM', memory_get_usage());
 define('CORE_PATH', dirname(__FILE__));
 define('ROOT_PATH', dirname(CORE_PATH));
 define('DS', DIRECTORY_SEPARATOR);
@@ -24,6 +24,7 @@ class Application
     )
     {
         $this->version = Request::get('v','1.0.0');
+        define('APP_VERSION','v'.$this->version);
         $this->path = $this->path==''? 'v'.$this->version : $this->path;
         define('VERSION_PATH',APP_PATH.DS.$this->path);
         if(!file_exists(VERSION_PATH)){
@@ -53,15 +54,17 @@ class Application
      */
     public function send(?array $params=[]):void
     {
-
-        $this->route->send(array_merge($params,['version'=>$this->version]));
+        $this->route->send($params);
+        Logger::info("消耗内存 ".Debug::getUseMem());
+        Logger::info("耗时 ".Debug::getUseTime().' 秒');
+        Logger::info("吞吐率 ".Debug::getThroughputRate());
+        Logger::info("共运行 ".Debug::getFile()." 个文件");
+        Logger::info("\n".implode("\n",Debug::getFile(true)));
     }
 
     public static function runtimeCache():void
     {
-
         define('RUNTIME_PATH', VERSION_PATH . DS . 'runtime');
-
         if (!file_exists(RUNTIME_PATH)) {
             mkdir(RUNTIME_PATH, 0777, true);
         }

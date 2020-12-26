@@ -12,8 +12,6 @@ class Request{
         'bool',
     ];
 
-
-
     public static function get(?string $key='',?string $default='',?string $filter=''):string|array
     {
         if($key==''){
@@ -40,4 +38,29 @@ class Request{
         return $params;
     }
 
+    public static function request(?string $key='',?string $default='',?string $filter=''):string|array
+    {
+        if($key==''){
+            return $_REQUEST;
+        }
+        $params = '';
+        if(isset($_REQUEST[$key])){
+            $params = $_REQUEST[$key];
+        }
+        $params = $params? $params: $default;
+        return $params;
+    }
+
+    public static function files(?string $key='',?string $default='',?string $filter=''):string|array
+    {
+        if($key==''){
+            return $_FILES;
+        }
+        $params = '';
+        if(isset($_FILES[$key])){
+            $params = $_FILES[$key];
+        }
+        $params = $params? $params: $default;
+        return $params;
+    }
 }

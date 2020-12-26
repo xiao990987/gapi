@@ -2,8 +2,10 @@
 
 return [
 
-    'debug' => true,
+    'debug' => false,
     'logfile' => false,
+    'wss' => false,
+    'trace' => false,
 
 
 

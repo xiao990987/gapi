@@ -8,6 +8,9 @@
             "email": "xiao990987@163.com"
         }
     ],
+    "scripts": {
+        "serve": "@php -S 0.0.0.0:8888 -t / index.php"
+    },
     "require": {
 
         "symfony/mime": "^5.2.1"

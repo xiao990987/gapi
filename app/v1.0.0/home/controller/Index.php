@@ -1,7 +1,10 @@
 <?php
 
 namespace app\home\controller;
+use gapi\Autoload;
 use gapi\Config;
+use gapi\database\Db;
+use gapi\database\Query;
 use gapi\Request;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
@@ -10,12 +13,16 @@ class Index
     #[\gapi\Route(path: "/index", methods: "get")]
     public function index()
     {
-
-        $databaseConfig = Config::file('database.php');
-
-
-
-        print_r($databaseConfig);
+        echo 'hello world';
+//        Autoload::version();
+//
+//        exit;
+//        $query = Db::connect(Config::file('database.php'))->query("SHOW COLUMNS from lg_member;");
+//
+//        $queryObj = new Query();
+//        echo $queryObj->version();
+//        $queryObj->table('lg_member');
+//        print_r($query);
 
     }
 

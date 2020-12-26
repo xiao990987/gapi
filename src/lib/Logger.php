@@ -12,26 +12,31 @@ class Logger
     static $suffix = '.log';
     static $level = 'info,debug,error';// info,debug,error
     static $levels = ['info', 'debug', 'error'];
-    static $wss = 1; # 开启websocket 调试  默认地址：wss://127.0.0.1:8866/wss
-    static $open = 1; # 是否开启日志
+    static $wss = false; # 开启websocket 调试  默认地址：wss://127.0.0.1:8866/wss
 
     static $logfile = false;
     static $debug = false;
     static $logIndex = 0;
+    static $trace = false;
 
 
     public static function write(string $msg,string $type = 'info'):void
     {
         if(++self::$logIndex){
-            self::$debug = Config::file('config.php')['debug'];
-            self::$logfile = Config::file('config.php')['logfile'];
+            $config = Config::file('config.php');
+            self::$debug = $config['debug'];
+            self::$logfile = $config['logfile'];
+            self::$wss = $config['wss'];
+            self::$trace = $config['trace'];
         }
-        if(!self::$debug){
+        if(self::$trace){
+            echo $msg;
             return ;
         }
 
-        if (self::$open == 0) {
-            return;
+
+        if(!self::$debug){
+            return ;
         }
 
         if ($msg == '') {
@@ -47,7 +52,6 @@ class Logger
             # 同步日志服务
             \gapi\extend\WebSocketClient::getInstance()->sendData($info);
         }
-
 
         if(self::$logfile){
             if (!file_exists(self::$path)) {

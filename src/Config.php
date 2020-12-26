@@ -3,13 +3,9 @@ namespace gapi;
 
 class Config{
 
-    public static function file($file = 'config')
+    public static function file(string $file = 'config'):mixed
     {
-        $file = VERSION_PATH . DS . $file;
-        if (file_exists($file)) {
-            return include $file;
-        }
-        return [];
+        return Autoload::file($file);
     }
 
     public static function get($key){

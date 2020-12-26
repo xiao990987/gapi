@@ -4,7 +4,6 @@ namespace app;
 
 use gapi\Route;
 
-
 Route::get(['/index.html'],'home/index/index',[]);
 Route::get(['/index','/'],'home/index/index',[]);
 Route::get(['/next'],'home/index/next',[]);

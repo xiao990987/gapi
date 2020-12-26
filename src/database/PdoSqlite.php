@@ -20,10 +20,9 @@ class PdoSqlite extends DBase
      * @param PdoSqliteDatabase $database
      * @return bool
      */
-    public function _connect(mixed $database): bool
+    public function _connect(array $database): void
     {
-
-        $this->db = new \pdo('sqlite:' . $database->filename, null, null,
+        $this->db = new \pdo('sqlite:' . $database['filename'], null, null,
             [
             \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
@@ -32,8 +31,7 @@ class PdoSqlite extends DBase
             \PDO::ATTR_EMULATE_PREPARES => false,
         ]
         );
-        $this->exec('set names ' . $database->charset.'');
-        return TRUE;
+        $this->exec('set names ' . $database['charset']);
     }
 
     /**
@@ -54,7 +52,7 @@ class PdoSqlite extends DBase
      *
      * @return array
      */
-    public function _query($sql): array
+    public function query($sql): array
     {
         $query = $this->db->query($sql);
 
@@ -62,7 +60,7 @@ class PdoSqlite extends DBase
             $result = [];
             $data = $query->fetchAll(\PDO::FETCH_ASSOC);   //只获取键值
             foreach ($data as &$item) {
-                $result[] = new Data($item);
+                $result[] = $item;
             }
             return $result;
         }
@@ -77,7 +75,7 @@ class PdoSqlite extends DBase
      *
      * @return string
      */
-    public function real_escape_string($string): string
+    public function quote($string): string
     {
         return $this->db->quote($string);
     }
@@ -87,7 +85,7 @@ class PdoSqlite extends DBase
      *
      * @return int|bool
      */
-    public function _exec($sql): int|bool
+    public function exec($sql): int|bool
     {
         return $this->db->exec($sql);
     }
@@ -95,7 +93,7 @@ class PdoSqlite extends DBase
     /**
      * @return bool
      */
-    public function beginTransaction(): bool
+    public function startTrans(): bool
     {
         return $this->db->beginTransaction();
     }

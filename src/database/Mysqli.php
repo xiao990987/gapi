@@ -1,16 +1,13 @@
 <?php
-
 namespace gapi\database;
 
 
 use QApi\Config\Database\MysqliDatabase;
-use QApi\Data;
-use QApi\Database\DBase;
 
 /**
  * Class mysqliDriver
  */
-class Mysqli extends DBase
+class Mysqli extends Database
 {
     /**
      * @var \mysqli
@@ -22,16 +19,15 @@ class Mysqli extends DBase
      *
      * @return bool
      */
-    public function _connect(mixed $database)
+    public function _connect(array $database): void
     {
         //=====使用长连接
-        $mysqli = new \mysqli($database->host, $database->user, $database->password, $database->dbName, $database->port);
+        $mysqli = new \mysqli($database['hostname'], $database['username'], $database['password'],$database['database'], $database['hostport']);
         if ($mysqli->connect_error) {
             new \ErrorException('连接数据库失败：' . $mysqli->connect_error);
         } else {
             $this->mysqli = $mysqli;
-            $this->mysqli->set_charset($database->charset);
-            return TRUE;
+            $this->mysqli->set_charset($database['charset']);
         }
     }
 
@@ -40,7 +36,7 @@ class Mysqli extends DBase
      *
      * @return string
      */
-    public function real_escape_string($string): string
+    public function quote($string): string
     {
         $string = mysqli_real_escape_string($this->mysqli, $string);
         if (is_numeric($string)) {
@@ -63,14 +59,14 @@ class Mysqli extends DBase
      * @param $sql
      * @return array | Data
      */
-    public function &_query($sql): Data|array
+    public function query($sql): Data|array
     {
         $query = $this->mysqli->query($sql);
         $result = [];
         if ($query) {
             while ($row = $query->fetch_assoc()) {
                 $data = $row;
-                $result[] = new Data($data);
+                $result[] = $data;
                 unset($data);
             }
             unset($query);
@@ -91,7 +87,7 @@ class Mysqli extends DBase
      * @param $sql
      * @return bool
      */
-    public function _exec($sql): bool
+    public function exec($sql): bool
     {
         return $this->mysqli->query($sql);
     }
@@ -115,7 +111,7 @@ class Mysqli extends DBase
     /**
      * @return bool
      */
-    public function beginTransaction(): bool
+    public function startTrans(): bool
     {
         return $this->mysqli->autocommit(FALSE);
     }

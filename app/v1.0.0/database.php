@@ -2,7 +2,7 @@
 
 return [
     // 数据库类型
-    'type'            => 'mysqli',
+    'type'            => 'Mysqli',
     // 服务器地址
     'hostname'        => 'localhost',
     // 数据库名
