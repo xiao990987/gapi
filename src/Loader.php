@@ -6,6 +6,12 @@ use gapi\lib\Logger;
 
 class Loader
 {
+    public static function autoload(): void
+    {
+        # app
+        spl_autoload_register(['\\gapi\\Loader', 'app']);
+    }
+
     # app mvc
     private static function app(string $class): void
     {
@@ -45,15 +51,28 @@ class Loader
         return array_reverse($versions);
     }
 
-    public static function file($file): mixed
+    public static function system(string $file): array
     {
-        $version_file = VERSION_PATH . DS . $file;
+        $file = ROOT_PATH . DS . 'config' .DS. $file;
+        if (file_exists($file)) {
+            return include $file;
+        }
+        return [];
+    }
+
+    public static function file(string $file, string $version = ''): mixed
+    {
+        if (defined('VERSION_PATH')) {
+            $version = $version == '' ? VERSION_PATH : $version;
+        }
+
+        $version_file = $version . DS . $file;
         //当前版本
         if (file_exists($version_file)) {
             return include $version_file;
         }
         //回溯上一个版本
-        foreach (Autoload::version() as $version) {
+        foreach (Loader::version() as $version) {
             $version_file = APP_PATH . DS . $version . DS . $file;
             if (file_exists($version_file)) {
                 return include $version_file;
@@ -63,12 +82,11 @@ class Loader
     }
 
 
-    public static function controllers(string $version = ''): array
+    public static function controllers(string $current_version = ''): array
     {
-        $current_version = $version == '' ? APP_VERSION : $version;
-        $versions = array_merge([$current_version], self::version(APP_VERSION));
+        $versions = array_merge([$current_version], self::version($current_version));
         $versions = array_reverse($versions);
-        $modules = Autoload::file('module.php');
+        $modules = Loader::file('module.php');
         $controllers = [];
         foreach ($modules as $module) {
             foreach ($versions as $version) {
@@ -77,12 +95,12 @@ class Loader
                 //获取控制器列表
                 $files = dir_list($module_path);
                 foreach ($files as $file) {
-                    $controllers[$module . '\\' . substr(basename($file),0,-4)] = $file;
+                    $controllers[$module . '/' . substr(basename($file), 0, -4)] = $file;
                 }
             }
         }
         //sort($controllers);
-        print_r($controllers);
+
         return $controllers;
     }
 

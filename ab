@@ -1,1 +1,12 @@
 ab -n 1000 -c 100 http://127.0.0.1:8888/
+
+
+
+# 命令 command 系统
+
+
+# 自动生成路由
+php build auto route
+
+# 生成单个版本路由
+php build route vX.X.X

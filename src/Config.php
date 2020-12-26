@@ -5,7 +5,7 @@ class Config{
 
     public static function file(string $file = 'config'):mixed
     {
-        return Autoload::file($file);
+        return Loader::file($file);
     }
 
     public static function get($key){

@@ -1,6 +1,8 @@
 <?php
 
 namespace gapi;
+use gapi\lib\Logger;
+
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_FUNCTION | \Attribute::IS_REPEATABLE)]
 class Route
 {
@@ -21,7 +23,7 @@ class Route
         'HEAD' => [],
         'ALL' => [],
     ];
-    protected $handler;
+    public $handler;
 
     public function __construct(
         public array $path = [],
@@ -44,6 +46,7 @@ class Route
 
     public function send(?array $params = []): void
     {
+
         if ($params) {
             $method = $params['method'];
             if (method_exists(self::class, $method)) {
@@ -52,23 +55,8 @@ class Route
                 throw new \Exception("ROUTE::{$method} 不存在");
             }
         } else {
-            Autoload::file('router.php');
+            Loader::file('router.php');
         }
-    }
-
-    public static function update(): void
-    {
-        $controller = new \ReflectionClass(\app\home\controller\Index::class);
-        $methods = $controller->getMethods(\ReflectionMethod::IS_PUBLIC);
-
-        $routes = [];
-        foreach ($methods as $method) {
-            $attributes = $method->getAttributes(self::class);
-            foreach ($attributes as $attribute) {
-                $routes[] = $attribute->newInstance()->setHandler($method);
-            }
-        }
-        dump($routes);
     }
 
     /**
@@ -98,7 +86,7 @@ class Route
     }
 
 
-    public static function all(string $type,array $paths, string|callable $action, array $pattern = []): void
+    public static function all(string $type, array $paths, string|callable $action, array $pattern = []): void
     {
         $route = '';
         $params = [];
@@ -145,7 +133,6 @@ class Route
                 }
             }
         } else {
-
             foreach ($paths as $v) {
                 if ($uri == $v) {
                     $route = $action;
@@ -153,8 +140,6 @@ class Route
                 }
             }
         }
-
-
         if (is_callable($route)) {
             $route($params);
         } else {
@@ -164,11 +149,12 @@ class Route
 
     public static function post(array $paths, string|callable $action, array $pattern = []): void
     {
-        self::all('post',$paths,$action,$pattern);
+        self::all('post', $paths, $action, $pattern);
     }
+
     public static function request(array $paths, string|callable $action, array $pattern = []): void
     {
-        self::all('request',$paths,$action,$pattern);
+        self::all('request', $paths, $action, $pattern);
     }
 
 
@@ -205,6 +191,7 @@ class Route
             define('CONTROLLER_NAME', $mvc[1]);
             define('MODULE_NAME', $mvc[0]);
             $controller->$action($params);
+            Logger::info("当前执行方法: {$class}@{$action}");
         }
     }
 

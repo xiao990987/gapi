@@ -13,7 +13,7 @@ class WebSocketClient
 
     private function __construct()
     {
-        $this->connect($_SERVER['HTTP_HOST'], 8866, '/wss');
+        $this->connect(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '127.0.0.1', 8866, '/wss');
 
     }
 
