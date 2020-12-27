@@ -1,7 +1,7 @@
 {
     "name": "gapi/framework",
     "description": "api",
-    "license": "LING",
+    "license": "MIT",
     "authors": [
         {
             "name": "凌凌2兔",
