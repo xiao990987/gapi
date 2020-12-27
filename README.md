@@ -9,10 +9,13 @@
 ## 安装 Composer
 框架使用 Composer 来管理其依赖性。所以，在你使用之前，你必须确认在你电脑上是否安装了 Composer。
 如果未安装请前往 [https://getcomposer.org/](https://getcomposer.org/) 下载安装。
+
+## composer地址
+https://packagist.org/packages/gapi/framework
 ## 创建项目
 通过 composer 快速创建一个项目
 ```
-composer create-project gapi/framework
+composer create-project gapi/project
 ```
 ## 运行项目
 ```
