@@ -19,3 +19,12 @@ php build route vX.X.X
 
 # 解决方案，切换 composer 镜像地址
 # composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
+git tag -a 1.0.0
+
+git push --tags
+
+
+git tag v1.0
+
+git push origin v1.0

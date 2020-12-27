@@ -18,6 +18,7 @@
     "require": {
         "php": ">=8.0"
     },
+    "require-dev":{},
     "autoload": {
         "files": [
             "src/function/helper.php"
