@@ -1,8 +1,6 @@
 <?php
 namespace gapi;
 
-use gapi\lib\Logger;
-
 class Config{
 
     public static array $config = [];

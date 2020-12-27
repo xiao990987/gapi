@@ -12,7 +12,7 @@
 ## 创建项目
 通过 composer 快速创建一个项目
 ```
-composer create-project qapi/project
+composer create-project gapi/framework
 ```
 ## 运行项目
 ```
