@@ -16,19 +16,23 @@ abstract class Database
      */
     public function version(): string|null
     {
-        $version = $this->query('SELECT VERSION()');
+        $version = $this->query((new Query())->version());
         return $version ? $version[0]['VERSION()'] : NULL;
     }
 
 
     /**
-     * 获取最后自增ID
      *
+     *
+     *
+     *
+     *
+     * 获取最后自增ID
      * @return int
      */
     public function lastInsertId(): int
     {
-        $query = $this->query('SELECT LAST_INSERT_ID()');
+        $query = $this->query((new Query())->lastInsertId());
         return (int)$query[0]['LAST_INSERT_ID()'];
     }
 

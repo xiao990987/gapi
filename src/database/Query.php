@@ -8,7 +8,7 @@ class Query
 
     public string $sql = '';
     public string $table = '';
-    public string $handler = '';
+
     /**
      * @var string[] $section
      */
@@ -29,6 +29,9 @@ class Query
         'count' => '',
     ];
 
+    public function __contruct(){
+
+    }
 
     public function columns(string $table, string $prefix = ''): string
     {
@@ -107,7 +110,7 @@ class Query
 
     public function insert($insert)
     {
-        $this->handler = "select";
+
         return $this;
     }
 
@@ -205,69 +208,88 @@ class Query
 
     public function select(string $field = '*'): self
     {
+        $section = $this->section;
 
         $where = '';
         $flag = 0;
         if ($this->section['where']) {
             $flag = 1;
-            $where = implode(' and ', $this->section['where']);
+            $where = implode(' and ', $section['where']);
         }
         if ($this->section['orWhere']) {
             $flag = 1;
-            $where = implode(' or ', $this->section['orWhere']);
+            $where = implode(' or ', $section['orWhere']);
         }
         if ($flag) {
             $where = "where {$where}";
         }
 
-        $this->sql = "select {$field} from {$this->table}{$this->section['union']}{$this->section['join']}{$where}{$this->section['group']}{$this->section['order']}{$this->section['limit']}";
+        $this->sql = "select {$section['field']} from {$this->table}{$section['union']}{$section['join']}{$where}{$section['group']}{$section['order']}{$section['limit']}";
 
+        return $this;
+    }
+
+
+    public function find()
+    {
+        $this->section['limit'] = ' limit 1';
+        $this->select();
         return $this;
     }
 
 
     public function field(string $field): self
     {
-        $this->section['field'] = "$field";
+        $this->section['field'] = $field;
         return $this;
     }
 
 
-    public function sum(string $field, string $as = 'total'): self
+    public function sum(string $field, string $as = ''): self
     {
-        $this->section['select'] = "sum($field) as total";
+        $as = $as == '' ? $field : $as;
+        $this->section['field'] = $as == '' ? " sum($field)" : " sum($field) as {$as}";
         return $this;
     }
 
 
-    public function count(string $field = '*', string $as = 'total'): self
+    public function count(string $field = '*', string $as = ''): self
     {
-        $this->section['count'] = " count($field) as total";
+        $as = $as == '' ? $field : $as;
+        $this->section['field'] = $as == '' ? " count($field)" : " count($field) as {$as}";
         return $this;
     }
 
 
-    public function min(string $field): self
+    public function min(string $field, string $as = ''): self
     {
-        $this->section['min'] = " min($field) as total";
+        $as = $as == '' ? $field : $as;
+        $this->section['field'] = $as == '' ? " min($field)" : " min($field) as {$as}";
         return $this;
     }
 
-    public function max(string $field): self
+    public function max(string $field, string $as = ''): self
     {
-        $this->section['max'] = " max($field) as total";
+        $as = $as == '' ? $field : $as;
+        $this->section['field'] = $as == '' ? " max($field)" : " max($field) as {$as}";
         return $this;
     }
 
-    public function avg(string $field, string $as = 'total'): self
+    public function avg(string $field, string $as = ''): self
     {
-        $this->section['avg'] = " avg($field) as {$as}";
+        $as = $as == '' ? $field : $as;
+        $this->section['field'] = $as == '' ? " avg($field)" : " avg($field) as {$as}";
         return $this;
     }
 
     public function version(): string
     {
         return 'SELECT VERSION()';
+    }
+
+    public function lastInsertId(): string
+    {
+        return 'SELECT LAST_INSERT_ID()';
     }
 
     public function __toString()
@@ -277,5 +299,6 @@ class Query
 
         return $this->sql;
     }
+
 
 }

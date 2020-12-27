@@ -33,9 +33,10 @@ class Db extends Database
         try{
             Logger::info("run sql:{$sql}");
             return self::$db->query($sql);
-        }catch (\Exception){
-            Logger::error(self::$db->getError());
+        }catch (\Exception $e){
+            Logger::error($this->getError());
         }
+        return [];
     }
 
 

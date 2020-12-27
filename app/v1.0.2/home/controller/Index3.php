@@ -1,6 +1,7 @@
 <?php
 
 namespace app\home\controller;
+
 use gapi\Autoload;
 use gapi\Config;
 use gapi\database\Db;
@@ -17,15 +18,26 @@ class Index3
 
         $db = Db::connect(Config::file('database.php'));
 
-        $queryObj = new Query();
-        $queryObj->from('managers','lg_')->field('*')->limit(10)->order('uid desc')->select();
-        $lists = $db->query($queryObj);
+        //demo 1
+        $lists = $db->query(
+            (new Query())->from('managers', 'lg_')->field('*')->order('uid desc')->find()
+        );
 
         print_r($lists);
 
+
+        echo "\n\n";
+
+        //demo 2
+        $lists = $db->query(
+            (new Query())->from('managers', 'lg_')->max('uid', 'uid')->order('uid desc')->find()
+        );
+
+
+        print_r($lists);
+
+
     }
-
-
 
 
 }

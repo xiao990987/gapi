@@ -46,7 +46,10 @@ class Route
 
     public function send(?array $params = []): void
     {
+        if(Config::file('config.php')['debug']){
+            # 自动生成当前版本路由
 
+        }
         if ($params) {
             $method = $params['method'];
             if (method_exists(self::class, $method)) {

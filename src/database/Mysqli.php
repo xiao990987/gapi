@@ -62,7 +62,6 @@ class Mysqli extends Database
     public function query($sql): Query|array
     {
         $query = $this->mysqli->query($sql);
-        echo $sql;
         $result = [];
         if ($query) {
             while ($row = $query->fetch_assoc()) {
@@ -72,6 +71,8 @@ class Mysqli extends Database
             }
             unset($query);
             return $result;
+        }else{
+            throw new \ErrorException($this->getError());
         }
         return $result;
     }

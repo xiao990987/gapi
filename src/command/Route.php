@@ -15,7 +15,10 @@ class Route
 //        foreach(Loader::version() as $version){
 //            self::update($version);
 //        }
+        echo APP_PATH;
+        echo "\n\n";
         $versions = Loader::version();
+        print_r($versions);
         $version = $params[0];
         if(in_array($version,$versions)){
             self::update($version);

@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+define('CORE_PATH', dirname(__FILE__));
+define('ROOT_PATH', dirname(CORE_PATH));
+define('DS', DIRECTORY_SEPARATOR);
+define('APP_PATH', ROOT_PATH.DS.'app');
+require './vendor/autoload.php';
+$Command = new \gapi\Command();
+$Command->execute();

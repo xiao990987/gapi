@@ -1,11 +1,19 @@
 <?php
 namespace gapi;
 
+use gapi\lib\Logger;
+
 class Config{
+
+    public static array $config = [];
 
     public static function file(string $file = 'config'):mixed
     {
-        return Loader::file($file);
+        $config_file = Loader::file(file:$file,flag:true);
+        if(!isset(self::$config[$config_file])){
+            self::$config[$config_file] = Loader::file(file:$file);
+        }
+        return self::$config[$config_file];
     }
 
     public static function get($key){

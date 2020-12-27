@@ -60,7 +60,7 @@ class Loader
         return [];
     }
 
-    public static function file(string $file, string $version = ''): mixed
+    public static function file(string $file, string $version = '',bool $flag=false): mixed
     {
         if (defined('VERSION_PATH')) {
             $version = $version == '' ? VERSION_PATH : $version;
@@ -69,15 +69,18 @@ class Loader
         $version_file = $version . DS . $file;
         //当前版本
         if (file_exists($version_file)) {
+            if($flag) return $version_file;
             return include $version_file;
         }
         //回溯上一个版本
         foreach (Loader::version() as $version) {
             $version_file = APP_PATH . DS . $version . DS . $file;
             if (file_exists($version_file)) {
+                if($flag) return $version_file;
                 return include $version_file;
             }
         }
+        if($flag) return '';
         return [];
     }
 
