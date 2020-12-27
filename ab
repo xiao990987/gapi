@@ -16,3 +16,6 @@ php build auto route
 php build route vX.X.X
 
 #  "symfony/mime": "^5.2.1"
+
+# 解决方案，切换 composer 镜像地址
+# composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
