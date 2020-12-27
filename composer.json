@@ -16,7 +16,8 @@
         "route":"@php build route"
     },
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "gapi/framework": "dev-master"
     },
     "require-dev":{},
     "autoload": {
