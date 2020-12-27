@@ -2,6 +2,8 @@
     "name": "gapi/framework",
     "description": "api",
     "license": "MIT",
+    "type": "project",
+    "keywords": ["gapi","Framework","QApi example-project"],
     "authors": [
         {
             "name": "凌凌2兔",
