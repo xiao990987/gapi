@@ -14,3 +14,5 @@ php build auto route
 
 # 生成单个版本路由
 php build route vX.X.X
+
+#  "symfony/mime": "^5.2.1"

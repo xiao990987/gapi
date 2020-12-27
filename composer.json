@@ -16,7 +16,7 @@
         "route":"@php build route"
     },
     "require": {
-        "symfony/mime": "^5.2.1"
+        "php": ">=8.0"
     },
     "autoload": {
         "files": [
